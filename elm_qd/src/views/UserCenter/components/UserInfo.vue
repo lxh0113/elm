@@ -24,63 +24,51 @@
         <div style="height: 200px">头像</div>
       </li>
       <div style="height: 100px;"></div>
-      <li>
-        <div>地址+</div>
-      </li>
     </ul>
   </div>
   <div class="userInfoRight">
     <ul>
       <li>
         <div class="userId" style="height: 100px;line-height: 100px">
-          <span style="font-size: 20px">{{userStore?.user?.id}}</span>
+          <span style="font-size: 20px">{{user.id}}</span>
         </div>
       </li>
       <li>
         <div class="userName" style="height: 100px;">
-          <input type="text" v-model="userStore.user.nickname">
+          <input type="text" v-model="user.nickname">
         </div>
       </li>
       <li>
         <div class="userGender" style="height: 100px;line-height: 100px;">
-          <label><input type="radio" name="sex" value="1" v-model="userStore.user.gender">&nbsp;&nbsp;男</label>
-          <label style="margin-left: 100px;"><input v-model="userStore.user.gender" type="radio" name="sex" value="0">&nbsp;&nbsp;女</label>
+          <label><input type="radio" name="sex" value="1" v-model="user.gender">&nbsp;&nbsp;男</label>
+          <label style="margin-left: 100px;"><input v-model="user.gender" type="radio" name="sex" value="0">&nbsp;&nbsp;女</label>
         </div>
       </li>
       <li>
         <div class="userAge" style="height: 100px;">
-          <input type="number" max="100" min="0" v-model="userStore.user.age">
+          <input type="number" max="100" min="0" v-model="user.age">
         </div>
       </li>
       <li>
         <div class="telephone" style="height: 100px">
-          <input type="number" minlength="11" v-model="userStore.user.telephone">
+          <input type="number" minlength="11" v-model="user.telephone">
         </div>
       </li>
       <li>
         <div class="userEmail" style="height: 100px">
-          <input type="text" v-model="userStore.user.email">
+          <input type="text" v-model="user.email">
         </div>
       </li>
       <li>
         <div class="avatar" style="height: 200px">
-          <img :src="userStore.user.avatar" alt="图片未加载">
+          <img :src="`${user.avatar}`"  alt="图片未加载">
         </div>
       </li>
       <li>
         <div class="buttonBox">
-          <input type="file" name="fileUpload"/>
-          <button>修改信息</button>
-        </div>
-      </li>
-      <li>
-        <div class="userAddress">
-          <ul>
-            <li v-for="item in 4" :key="item">
-              <AddressItem :address="address">
-              </AddressItem>
-            </li>
-          </ul>
+          <input type="file" ref="uploadInput" enctype="multipart/form-data" @change="uploadAvatar" name="fileUpload" style="display: none"/>
+          <button @click="toUpload">上传头像</button>
+          <button @click="changeInfo">修改信息</button>
         </div>
       </li>
     </ul>
@@ -92,10 +80,19 @@
 import AddressItem from '@/views/UserCenter/components/AddressItem.vue'
 import {ref} from 'vue'
 import {useUserStore} from "@/stores/userStore.js";
+import {uploadImgAPI} from "@/apis/upload.js";
+import {storeToRefs} from 'pinia'
+import {getUserInfoAPI} from '@/apis/login.js'
+import {ElMessage} from "element-plus";
+import {changeUserInfoAPI} from "@/apis/user.js";
+
 //获取到个人信息
+
+const uploadInput=ref(null)
 
 const userStore=useUserStore();
 
+let user={...userStore.user}
 
 const address=ref({
   receiverName:'lxh0113',
@@ -107,6 +104,86 @@ const address=ref({
   detail:'吉首大学张家界校区',
   isDefault:0
 })
+
+const toUpload=()=>{
+  console.log(uploadInput)
+  uploadInput.value.click()
+}
+
+const uploadAvatar=async ()=>{
+  var file = uploadInput.value.files[0];
+  var imageRegex = /\.(jpeg|jpg|png|gif)$/i;
+
+  console.log(file)
+
+  if(imageRegex.test(file.name))
+  {
+    var imageUrl = URL.createObjectURL(file);
+    console.log("这是一个图片")
+
+    let data = new FormData(); //创建form对象
+    data.append("userId",userStore.user.id)
+    const res=await uploadImgAPI(userStore.user.id,data)
+
+    console.log(res)
+
+    if(res.data.code===1)
+    {
+      const res=await userStore.getUserById(userStore.user.id);
+
+      if(res.success===1)
+      {
+        user={...userStore.user}
+      }
+
+    }
+    else ElMessage.error(res.data.msg)
+
+  }
+  else ElMessage.error('您选择的不是一个图片！')
+}
+
+const changeInfo=async ()=>{
+  //先判断是否有改变
+  let areEqual = true;
+
+  for (const key in user) {
+    if (user[key] !== userStore.user[key]) {
+      areEqual = false;
+      break;
+    }
+  }
+
+  if(areEqual===true)
+  {
+    ElMessage.error("您并没有做出任何修改！！");
+  }
+  else
+  {
+    //发送请求修改
+    const res= await changeUserInfoAPI(user);
+
+    if(res.data.code===1)
+    {
+      //正确的设置新的值
+      const resData=await userStore.getUserById(user.id);
+      if(resData.success)
+      {
+        //重新解构赋值
+        user={...userStore.user}
+        ElMessage.success("修改成功！");
+      }
+      else
+      {
+        ElMessage.error("服务器繁忙，请稍后重试")
+      }
+    }
+    else {
+      ElMessage.error("修改失败")
+    }
+
+  }
+}
 </script>
 
 <style scoped>
@@ -196,6 +273,5 @@ const address=ref({
   color: white;
   border-radius: 20px;
   border: 2px solid #eeeeee;
-
 }
 </style>

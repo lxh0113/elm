@@ -42,6 +42,7 @@ const store=ref({
   width: 1160px;
   margin: 0 auto;
   height: 1000px;
+
   /*background-color: #fed6e3;*/
 }
 ul

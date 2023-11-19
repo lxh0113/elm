@@ -3,22 +3,55 @@
   <div class="orderBox">
     <div class="leftCategory">
       <ul>
-        <li v-for="item in 6">
-          <router-link :to="'/menu/' + $route.params.id + '/order/details'">
-            老板推荐
+        <li v-for="item in categoryDataList">
+          <router-link :to="'/menu/' + $route.params.id + '/order/details'+'/'+item.id">
+            {{item.name}}
           </router-link>
         </li>
       </ul>
     </div>
     <div class="rightOrder">
-      <RouterView></RouterView>
+      <keep-alive>
+        <router-view :key="$route.fullPath" />
+      </keep-alive>
+<!--      <RouterView>-->
+<!--        <MenuDetails :key="$route.params.categoryId" />-->
+<!--      </RouterView>-->
     </div>
   </div>
 </div>
 </template>
 
 <script setup>
+import {ref,onMounted} from "vue";
+import {getAllCategoryAPI} from '@/apis/category.js'
+import {useRoute,useRouter} from "vue-router";
+import {ElMessage} from "element-plus";
+import MenuDetails from "@/views/Menu/components/MenuDetails.vue"
 
+const router=useRouter()
+const route=useRoute()
+const categoryDataList=ref([])
+
+const getCategory=async ()=>{
+  let storeId=route.params.id;
+  const res=await getAllCategoryAPI({storeId})
+
+  if(res.data.code===1)
+  {
+    categoryDataList.value=res.data.data
+  }
+  else
+  {
+    ElMessage.error(res.data.msg)
+  }
+}
+
+onMounted(()=>{
+  getCategory()
+
+  router.push("")
+})
 </script>
 
 <style scoped>

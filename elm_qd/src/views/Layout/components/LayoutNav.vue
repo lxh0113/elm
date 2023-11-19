@@ -13,7 +13,7 @@
         <div @mouseleave="disappearShow" :class="{show:isShow}" class="choose">
           <ul>
             <li @click="toUserCenter">个人中心</li>
-            <li @click="toStore">{{ userStore?.user?.identity === 1 ? "成为商家" : "进入商家端" }}</li>
+            <li @click="toStore">{{ userStore?.user?.identity === 0 ? "成为商家" : "进入商家端" }}</li>
           </ul>
         </div>
       </li>
@@ -24,16 +24,16 @@
   </div>
 
   <!-- Button trigger modal -->
-  <button ref="addressModal" type="button" style="display: none" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch static backdrop modal
+  <button ref="addressModal" type="button" style="display: none" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addressModal">
+    地址
   </button>
 
   <!-- Modal -->
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="addressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addressModalTitle" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">设置地址</h5>
+          <h5 class="modal-title" id="addressModalTitle">设置地址</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -44,12 +44,12 @@
               <option v-for="item in provinceArry" :key="item.districtId" :value="item.districtId">{{item.district}}</option>
             </select>
             <select ref="cityRef" class="form-select" aria-label="Default select example" v-model="addressForm.city" @change="changeCity">
-              <option :value="0" selected>市</option>
+              <option :value="0">市</option>
               <option v-for="item in cityArry" :key="item.districtId" :value="item.districtId">{{item.district}}</option>
             </select>
 
             <select ref="districtRef" style="width: 438px" class="form-select" aria-label="Default select example" v-model="addressForm.district">
-              <option :value="0" selected>区</option>
+              <option :value="0">区</option>
               <option v-for="item in districtArry" :key="item.districtId" :value="item.districtId">{{item.district}}</option>
             </select>
 
@@ -66,6 +66,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
@@ -88,6 +89,9 @@ const Router=useRouter();
 
 const detailAddress=ref("");
 
+//成为商家的弹窗
+const becomeStore=ref(null)
+
 const showPerson=()=>{
   isShow.value=1;
 }
@@ -99,9 +103,24 @@ const disappearShow=()=>{
 const addressModal=ref(null)
 
 const toStore=()=>{
-  if(userStore?.user?.identity===2)
+  if(userStore?.user?.identity===0)
+  {
+    //成为商家
+    Router.push("/user/store")
+  }
+  else if(userStore?.user?.identity<=2)
   {
     Router.push("/store/workplace")
+  }
+  else if (userStore?.user?.identity===3)
+  {
+    //不允许开业
+    ElMessage.error("你的店铺状态有问题，请联系管理员")
+  }
+  else if(userStore?.user?.identity===4)
+  {
+    //商家待审核
+    ElMessage.info("你的店铺还在审核，预计俩天后给出答复")
   }
 }
 const toUserCenter=()=>{
@@ -233,12 +252,14 @@ const chooseAddress=async ()=>{
     {
       //获取成功
       provinceArry.value=res.data.data
+      await changeProvince()
     }
     else
     {
       ElMessage.info("出错了！");
       return ;
     }
+
     addressModal.value.click();
 
   }
@@ -312,7 +333,6 @@ li:nth-child(n+2)
 }
 .choose
 {
-  height: 200px;
   width: 200px;
   background: white;
   position: absolute;
@@ -350,8 +370,18 @@ li:nth-child(n+2)
   margin-bottom: 40px;
 }
 
+.pcd select:nth-last-child
+{
+  width: 200px;
+}
+
 .mb-3 input
 {
   width: 438px;
 }
+.mb-5
+{
+  margin-bottom: 0!important;
+}
+
 </style>

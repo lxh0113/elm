@@ -1,24 +1,27 @@
 <template>
-  <CategoryContainer :title="title" :sub-title="sbuTitle">
+  <CategoryContainer v-for="item in recommendDataList" :key="item" :title="item.title" :sub-title="item.subTitle">
     <ul>
-      <li v-for="item in 4" :key="item">
-        <GoodsItem :good="good"></GoodsItem>
+      <li v-for="storeItem in item.list" :key="storeItem.id">
+        <GoodsItem :good="storeItem"></GoodsItem>
       </li>
     </ul>
   </CategoryContainer>
-  <CategoryContainer :title="title" :sub-title="sbuTitle">
-    <ul>
-      <li v-for="item in 4" :key="item">
-        <GoodsItem :good="good"></GoodsItem>
-      </li>
-    </ul>
-  </CategoryContainer>
+<!--  <CategoryContainer :title="title" :sub-title="sbuTitle">-->
+<!--    <ul>-->
+<!--      <li v-for="item in 4" :key="item">-->
+<!--        <GoodsItem :good="good"></GoodsItem>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </CategoryContainer>-->
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref,onMounted} from 'vue'
 import CategoryContainer from '@/views/Layout/components/CategoryContainer.vue'
 import GoodsItem from '@/views/Layout/components/GoodsItem.vue'
+import {useUserStore} from "@/stores/userStore";
+import {recommendStoreAPI} from '@/apis/store.js'
+import {ElMessage} from "element-plus";
 
 const good=ref({
     id:'12',
@@ -33,6 +36,29 @@ const good=ref({
 
 const title=ref("附近")
 const sbuTitle=ref("你好")
+const userStore=useUserStore();
+
+const recommendDataList=ref({
+
+})
+
+const getRecommend=async ()=>{
+  const res=await recommendStoreAPI(userStore.user.id);
+
+  if(res.data.code===1)
+  {
+    console.log(res)
+    recommendDataList.value=res.data.data;
+  }
+  else
+  {
+    ElMessage.error(res.data.msg)
+  }
+}
+
+onMounted(()=>{
+  getRecommend()
+})
 </script>
 
 <style scoped>

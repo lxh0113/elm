@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.elm.common.R;
 import com.elm.dao.Rc_district;
 import com.elm.dao.requestData.RcDistrictData;
-import com.elm.domain.rc_district;
+import com.elm.domain.RcDistrict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +22,12 @@ public class RcDistrictController {
     public R getDistrict(@RequestBody RcDistrictData rcDistrictData)
     {
         System.out.println(rcDistrictData.getPid()+" "+rcDistrictData.getLevel());
-        QueryWrapper<rc_district> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<RcDistrict> queryWrapper=new QueryWrapper<>();
         queryWrapper.select("district_id","pid","district","level")
                 .eq("pid",rcDistrictData.getPid())
                 .eq("level",rcDistrictData.getLevel());
 
-        List<rc_district> list=rc_districtDao.selectList(queryWrapper);
+        List<RcDistrict> list=rc_districtDao.selectList(queryWrapper);
 //        System.out.println(list);
         if(list==null)
         {
@@ -39,5 +39,14 @@ public class RcDistrictController {
         }
         else return R.success(list);
 
+    }
+
+    @GetMapping("/{id}")
+    public R getAddress(@PathVariable String id)
+    {
+        QueryWrapper<RcDistrict> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("district_id",id);
+        RcDistrict rcDistrict=rc_districtDao.selectOne(queryWrapper);
+        return R.success(rcDistrict);
     }
 }

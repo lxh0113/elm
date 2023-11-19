@@ -12,6 +12,16 @@ export const loginAPI=(id,password)=>{
     })
 }
 
+export const getUserInfoAPI=(id)=>{
+    return request({
+        url:'/api/pre/user',
+        method:'POST',
+        data:{
+            id:id
+        }
+    })
+}
+
 export const registerAPI=(data)=>{
     return request({
         url:'/api/pre/register',

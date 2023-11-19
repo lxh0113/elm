@@ -25,6 +25,7 @@
 {
   background: white;
   width: 100%;
+  min-width: 1240px;
 }
 .searchNav
 {

@@ -1,12 +1,11 @@
 package com.elm.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.models.auth.In;
 
 import java.util.Date;
 
 @TableName("orders")
-public class orders {
+public class Orders {
 
     private Integer id;
 
@@ -30,10 +29,10 @@ public class orders {
 
     private String cancel_reason;
 
-    public orders() {
+    public Orders() {
     }
 
-    public orders(Integer id, String buyer_id, String store_id, Double price, Integer address_id, Double package_fee, Integer status, Date time, String remark, Integer is_cancel, String cancel_reason) {
+    public Orders(Integer id, String buyer_id, String store_id, Double price, Integer address_id, Double package_fee, Integer status, Date time, String remark, Integer is_cancel, String cancel_reason) {
         this.id = id;
         this.buyer_id = buyer_id;
         this.store_id = store_id;

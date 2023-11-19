@@ -1,15 +1,16 @@
 package com.elm.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("category")
-public class category {
+public class Category {
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private String store_id;
-
-    private Integer flag;
+    private String storeId;
 
     private Integer sort;
 
@@ -17,13 +18,12 @@ public class category {
 
     private Integer status;
 
-    public category() {
+    public Category() {
     }
 
-    public category(Integer id, String store_id, Integer flag, Integer sort, String name, Integer status) {
+    public Category(Integer id, String storeId, Integer sort, String name, Integer status) {
         this.id = id;
-        this.store_id = store_id;
-        this.flag = flag;
+        this.storeId = storeId;
         this.sort = sort;
         this.name = name;
         this.status = status;
@@ -37,20 +37,12 @@ public class category {
         this.id = id;
     }
 
-    public String getStore_id() {
-        return store_id;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setStore_id(String store_id) {
-        this.store_id = store_id;
-    }
-
-    public Integer getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Integer flag) {
-        this.flag = flag;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public Integer getSort() {

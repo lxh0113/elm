@@ -10,6 +10,7 @@
           <li><RouterLink to="/store/combo">套餐管理</RouterLink></li>
           <li><RouterLink to="/store/dish">菜品管理</RouterLink></li>
           <li><RouterLink to="/store/category">分类管理</RouterLink></li>
+          <li><RouterLink to="/store/info">商家信息</RouterLink></li>
         </ul>
       </div>
       <div class="right">

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-@WebFilter("/api/**")
+@WebFilter(value = {"/api/category/**","/api/user/**","/api/store/**","/api/upload/**"})
 public class JwtFilter implements Filter {
 
 

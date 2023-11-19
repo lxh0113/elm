@@ -1,11 +1,23 @@
 package com.elm.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Type;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @TableName("goods")
-public class goods {
+public class Goods {
 
-    private Integer id;
+    @TableId
+    private String id;
 
     private String url;
 
@@ -13,56 +25,36 @@ public class goods {
 
     private String description;
 
-    private Integer category_id;
+    @TableField("category_id")
+    private Integer categoryId;
 
-    public goods() {
-    }
+    private double price;
 
-    public goods(Integer id, String url, Integer status, String description, Integer category_id) {
-        this.id = id;
-        this.url = url;
-        this.status = status;
-        this.description = description;
-        this.category_id = category_id;
-    }
+    private String name;
 
-    public Integer getId() {
-        return id;
-    }
+    @TableField("store_id")
+    private String storeId;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    @TableField(exist = false)
+    private Integer current;
 
-    public String getUrl() {
-        return url;
-    }
+    @TableField(exist = false)
+    private boolean isSelected;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", categoryId=" + categoryId +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                ", storeId='" + storeId + '\'' +
+                ", current=" + current +
+                ", isSelected=" + isSelected +
+                '}';
     }
 }

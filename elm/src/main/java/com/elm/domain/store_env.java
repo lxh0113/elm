@@ -1,35 +1,25 @@
 package com.elm.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @TableName("store_env")
-public class store_env {
+public class Store_env {
 
-    private String store_id;
+    private String storeId;
 
     private String url;
 
-    public store_env() {
-    }
-
-    public store_env(String store_id, String url) {
-        this.store_id = store_id;
-        this.url = url;
-    }
-
-    public String getStore_id() {
-        return store_id;
-    }
-
-    public void setStore_id(String store_id) {
-        this.store_id = store_id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    @Override
+    public String toString() {
+        return "Store_env{" +
+                "storeId='" + storeId + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }

@@ -1,57 +1,39 @@
 package com.elm.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @TableName("flavors")
-public class flavors {
+public class Flavors {
 
     private String name;
 
     private String options;
 
-    private Integer flag;
+    private Double price;
 
-    private Integer flag_id;
+    @TableId(type = IdType.AUTO)
+    private Integer id;
 
-    public flavors() {
-    }
+    @TableField("goods_id")
+    private String goodsId;
 
-    public flavors(String name, String options, Integer flag, Integer flag_id) {
-        this.name = name;
-        this.options = options;
-        this.flag = flag;
-        this.flag_id = flag_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOptions() {
-        return options;
-    }
-
-    public void setOptions(String options) {
-        this.options = options;
-    }
-
-    public Integer getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Integer flag) {
-        this.flag = flag;
-    }
-
-    public Integer getFlag_id() {
-        return flag_id;
-    }
-
-    public void setFlag_id(Integer flag_id) {
-        this.flag_id = flag_id;
+    @Override
+    public String toString() {
+        return "Flavors{" +
+                "name='" + name + '\'' +
+                ", options='" + options + '\'' +
+                ", price=" + price +
+                ", id=" + id +
+                ", goodsId=" + goodsId +
+                '}';
     }
 }

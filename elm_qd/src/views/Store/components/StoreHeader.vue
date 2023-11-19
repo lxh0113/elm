@@ -1,7 +1,7 @@
 <template>
 <div class="bigBox">
   <div class="logo">
-    <img src="@/img/logo.png" alt="图片未加载">
+    <img @click="$router.push('/')" src="@/img/logo.png" alt="图片未加载">
     <span v-if="true" class="on">营业中</span>
     <span v-else class="off">关门中</span>
   </div>

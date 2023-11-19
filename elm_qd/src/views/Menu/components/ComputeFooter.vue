@@ -3,19 +3,26 @@
   <div class="leftF">
     <div class="cart">
       <div class="iconDiv">
-        这里是一个图标
+        <i class="bi bi-cart3" ></i>
+        <span>{{shopListStore.getSum()}}</span>
       </div>
-      <h2>￥12</h2>
+      <h2>￥{{shopListStore.getTotalPrice()}}</h2>
     </div>
   </div>
   <div class="rightF">
-    <button>去结算</button>
+    <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">去结算</button>
   </div>
 </div>
+
+
+
 </template>
 
 <script setup>
+// import IconDocumentation from "@/components/icons/IconDocumentation.vue";
+import {useShopListStore} from "@/stores/shopListStore";
 
+const shopListStore=useShopListStore();
 </script>
 
 <style scoped>
@@ -43,9 +50,12 @@
   display: flex;
   line-height: 120px;
 }
-.cart .iconDiv
+.iconDiv
 {
-
+  width: 120px;
+  height: 120px;
+  /*background: #01b6fd;*/
+  position: relative;
 }
 .cart h2
 {
@@ -63,5 +73,27 @@
   background: #4e9fe7;
   color: white;
   border: 2px solid #eeeeee;
+}
+
+.iconDiv i
+{
+  font-size: 80px;
+  color: #4e9fe7;
+  /*font-weight: bold;*/
+}
+.iconDiv span
+{
+  box-sizing: border-box;
+  /*padding-left: 4px;*/
+  text-align: center;
+  position: absolute;
+  top:20px;
+  right: 30px;
+  background: red;
+  border-radius: 50%;
+  line-height: 30px;
+  color: white;
+  height: 30px;
+  width: 30px;
 }
 </style>

@@ -14,6 +14,12 @@
       <li>
         <router-link :to="'/user/remark'">评价中心</router-link>
       </li>
+      <li>
+        <router-link :to="'/user/store'">成为商家</router-link>
+      </li>
+      <li>
+        <router-link :to="'/user/address'">地址管理</router-link>
+      </li>
     </ul>
   </div>
   <div class="userRight">

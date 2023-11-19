@@ -1,19 +1,19 @@
 <template>
   <div class="bigBox" @click="to(good.id)">
     <div class="logoUrl">
-      <img :src="good.logo_url" alt="图片未加载">
+      <img :src="good.logoUrl" alt="图片未加载">
     </div>
     <div class="rightText">
       <div class="title">
         <h1>{{good.name}}</h1>
       </div>
       <div class="details">
-        <span class="star">{{good.star}}分</span>
-        <span class="sales">月售{{good.sales}}+</span>
+        <span class="star">4.8分</span>
+        <span class="sales">月售100+</span>
       </div>
       <div class="category">
         <span class="categoryText">西餐</span>
-        <span class="deliver">起送费：{{good.deliver_start_fee}}</span>
+        <span class="deliver">起送费：{{good.deliverStartFee}}</span>
       </div>
       <div class="desc">
         <span>{{good.description}}</span>
@@ -33,6 +33,7 @@ defineProps({
     type:Object
   }
 })
+
 
 const to=(id)=>{
   Router.push(`/menu/${id}`);

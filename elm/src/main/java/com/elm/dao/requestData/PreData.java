@@ -51,4 +51,14 @@ public class PreData {
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
     }
+
+    @Override
+    public String toString() {
+        return "PreData{" +
+                "id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", captcha='" + captcha + '\'' +
+                '}';
+    }
 }

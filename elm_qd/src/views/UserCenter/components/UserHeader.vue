@@ -2,7 +2,7 @@
 <div class="userHeader">
   <img src="../../../../src/img/logo.png" alt="">
   <div class="avatar">
-    <img :src="userStore?.user?.avatar" alt="">
+    <img @click="$router.push('/')" :src="userStore?.user?.avatar" alt="">
     <span>{{userStore.user.nickname}}</span>
   </div>
 </div>
@@ -12,6 +12,8 @@
 import {useUserStore} from "@/stores/userStore.js";
 
 const userStore=useUserStore()
+
+// const userInfoData=userStore.getUserInfo();
 </script>
 
 <style scoped>

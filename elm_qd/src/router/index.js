@@ -19,6 +19,10 @@ import UserInfo from '@/views/UserCenter/components/UserInfo.vue'
 import UserOrder from '@/views/UserCenter/components/UserOrder.vue'
 import UserMessage from "@/views/UserCenter/components/UserMessage.vue";
 import UserRemark from "@/views/UserCenter/components/UserRemark.vue"
+import FourZeroFour from '@/views/404/index.vue'
+import BecomeStore from '@/views/UserCenter/components/BecomeStore.vue'
+import StoreInfo from "@/views/Store/components/StoreInfo.vue";
+import UserAddress from '@/views/UserCenter/components/UserAddress.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,7 +42,9 @@ const router = createRouter({
         {path: 'info',component: UserInfo},
         {path:'order',component: UserOrder},
         {path:'message',component: UserMessage},
-        {path:'remark',component: UserRemark}
+        {path:'remark',component: UserRemark},
+        {path: 'store',component: BecomeStore},
+        {path:'address',component: UserAddress}
       ]
     },
     {
@@ -52,10 +58,10 @@ const router = createRouter({
         {path: 'category',component: ManageCategory},
         {path: 'combo',component: ManageCombo},
         {path: 'dish',component: ManageDish},
+        {path:'info',component: StoreInfo},
         {path: 'order',component: ManageOrders,
           children: [
             {path:'details',component:OrderDetails}
-
           ]
         }
       ]
@@ -77,7 +83,7 @@ const router = createRouter({
           component: MenuOrder,
           children: [
             {
-              path: 'details',
+              path: 'details/:categoryId',
               component: MenuDetails
             }
           ]

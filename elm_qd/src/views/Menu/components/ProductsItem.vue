@@ -1,32 +1,47 @@
 <template>
 <div class="productBac">
   <div class="leftImg">
-    <img src="@/img/123.jpg" alt="">
+    <img :src="good.url" alt="">
   </div>
   <div class="rightText">
-    <h3>薄荷奶绿</h3>
-    <span>很好吃很好吃</span>
+    <h3 :title="good.name">{{good.name}}</h3>
+    <span :title="good.description">{{good.description}}</span>
     <br>
-    <span style="color: #ff636b;font-weight: bold;">月售200+ 4.9分</span>
+    <span style="color: #ff636b;margin-top:10px;font-weight: bold;">月售200+ 4.9分</span>
     <br>
     <div class="priceText">
-      <h5>￥14起</h5>
-      <button class="chooseSize">
+      <h5>￥{{good.price}}起</h5>
+      <button @click="$emit('chooseSize',good.id)" class="chooseSize">
         选规格
       </button>
     </div>
   </div>
+
 </div>
+
 </template>
 
 <script setup>
+import 'bootstrap/js/src/modal.js'
+import {ref,onMounted} from "vue";
 
+defineProps({
+  good:{
+    type:Object
+  }
+})
+
+
+onMounted(()=>{
+
+})
 </script>
 
 <style scoped>
 h3,h5
 {
   font-weight: bold;
+  margin-bottom: 0px;
 }
 .productBac
 {
@@ -57,16 +72,22 @@ h3,h5
 {
   margin-top: 25px;
   line-height: 40px;
-
-  font-size: 23px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 25px;
 }
 .rightText span
 {
-
+  color: #6c757d;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   line-height: 30px;
 }
 .priceText
 {
+  margin-top: 8px;
   height: 60px;
   display: flex;
   justify-content: space-between;
@@ -74,7 +95,7 @@ h3,h5
 .priceText h5
 {
   line-height: 60px;
-  font-size: 16px;
+  font-size: 20px;
   color: red;
 }
 .chooseSize
