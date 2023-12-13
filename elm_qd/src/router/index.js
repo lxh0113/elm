@@ -23,6 +23,13 @@ import FourZeroFour from '@/views/404/index.vue'
 import BecomeStore from '@/views/UserCenter/components/BecomeStore.vue'
 import StoreInfo from "@/views/Store/components/StoreInfo.vue";
 import UserAddress from '@/views/UserCenter/components/UserAddress.vue'
+import Pay from "@/views/Pay/index.vue";
+import StoreChat from "@/views/Menu/components/StoreChat.vue";
+import UserOrdersDetails from "@/views/UserCenter/components/UserOrdersDetails.vue";
+import RemarkDetails from "@/views/UserCenter/components/RemarkDetails.vue";
+import StoreMessage from "@/views/Store/components/StoreMessage.vue"
+import WorkSpaceOrders from "@/views/Store/components/WorkSpaceOrders.vue"
+import ShopCart from '@/views/UserCenter/components/ShopCart.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,11 +47,28 @@ const router = createRouter({
       redirect:'/user/info',
       children:[
         {path: 'info',component: UserInfo},
-        {path:'order',component: UserOrder},
-        {path:'message',component: UserMessage},
-        {path:'remark',component: UserRemark},
+        {
+          path:'order',component: UserOrder,
+          redirect: to =>{
+            return `/user/order/-1`
+          },
+          children: [
+            {path:':status',component:UserOrdersDetails}
+          ]
+        },
+        // {path: 'order/:status',component: UserOrdersDetails},
+        {path:'message',component: UserMessage
+        },
+        {path:'remark',component: UserRemark,
+          redirect: to =>{
+            return `/user/remark/0`
+          },
+          children: [
+            {path:':status',component:RemarkDetails}
+          ]},
         {path: 'store',component: BecomeStore},
-        {path:'address',component: UserAddress}
+        {path:'address',component: UserAddress},
+        {path:'shopcart',component: ShopCart}
       ]
     },
     {
@@ -53,15 +77,27 @@ const router = createRouter({
       redirect:'/store/workplace',
       children:[
         // {path:'',component:StoreHome},
-        {path:'workplace',component:WorkSpace},
+        {path:'workplace',component:WorkSpace,
+          redirect: to => {
+            return `/store/workplace/1`; // 使用to.params.id获取实际的id值
+          },
+          children: [
+            {path: ':status',component: WorkSpaceOrders}
+          ]
+        },
         {path: 'data',component: DataStatistics},
         {path: 'category',component: ManageCategory},
-        {path: 'combo',component: ManageCombo},
+        // {path: 'combo',component: ManageCombo},
+        {path: 'message',component: StoreMessage},
         {path: 'dish',component: ManageDish},
         {path:'info',component: StoreInfo},
         {path: 'order',component: ManageOrders,
           children: [
-            {path:'details',component:OrderDetails}
+            {path:'details',component:OrderDetails,
+              redirect: to =>{
+              return `/order/details/-1`
+            }},
+            {path:'details/:choose',component:OrderDetails}
           ]
         }
       ]
@@ -69,6 +105,10 @@ const router = createRouter({
     ,
     {
       path:'/search',component:Search
+    }
+    ,
+    {
+      path:'/search/:search',component:Search
     }
     ,
     {
@@ -91,8 +131,16 @@ const router = createRouter({
         {
           path: 'remark',
           component: MenuRemark
+        },
+        {
+          path: 'chat',
+          component: StoreChat
         }
         ]
+    },
+    {
+      path:'/pay',
+      component:Pay
     }
   ]
 })

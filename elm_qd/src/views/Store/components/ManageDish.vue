@@ -594,9 +594,6 @@ const isSelected = computed({
 const bigCheck=()=>{
   console.log(isSelected.value)
   isSelected.value = !isSelected.value;
-  // dishesList.value.forEach((item)=>{
-  //   return item.isSelected=isSelected.value
-  // })
 }
 
 const toModifyModal=(index)=>{

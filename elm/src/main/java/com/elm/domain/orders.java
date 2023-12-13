@@ -1,23 +1,41 @@
 package com.elm.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.elm.dao.requestData.OrderItemsData;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @TableName("orders")
-public class Orders {
+public class Orders implements Delayed{
 
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private String buyer_id;
+    @TableField("buyer_id")
+    private String buyerId;
 
-    private String store_id;
+    @TableField("store_id")
+    private String storeId;
 
     private Double price;
 
-    private Integer address_id;
+    @TableField("address_text")
+    private String addressText;
 
-    private Double package_fee;
+    @TableField("package_fee")
+    private Double packageFee;
 
     private Integer status;
 
@@ -25,112 +43,99 @@ public class Orders {
 
     private String remark;
 
-    private Integer is_cancel;
+    @TableField("is_cancel")
+    private Integer isCancel;
 
-    private String cancel_reason;
+    @TableField("cancel_reason")
+    private String cancelReason;
 
-    public Orders() {
-    }
+    //订单细节
+    @TableField("orderInfo")
+    private String orderInfo;
 
-    public Orders(Integer id, String buyer_id, String store_id, Double price, Integer address_id, Double package_fee, Integer status, Date time, String remark, Integer is_cancel, String cancel_reason) {
+    @TableField("comment_id")
+    private Integer commentId;
+
+    @TableField(exist = false)
+    private List<OrderItemsData> itemsLists;
+
+    @TableField(exist = false)
+    private Integer number;
+
+    @TableField("buyer_name")
+    private String buyerName;
+
+    @TableField("buyer_tel")
+    private String buyerTel;
+
+    private String pcd;
+
+    @TableField(exist = false)
+    private Integer current;
+
+    @TableField(exist = false)
+    private String storeUrl;
+
+    @TableField(exist = false)
+    private String storeName;
+
+    public Orders(Integer id, String buyerId, String storeId, Double price, String addressText, Double packageFee, Integer status, Date time, String remark, Integer isCancel, String cancelReason, String orderInfo, Integer commentId, List<OrderItemsData> itemsLists, Integer number, String buyerName, String buyerTel, String pcd) {
         this.id = id;
-        this.buyer_id = buyer_id;
-        this.store_id = store_id;
+        this.buyerId = buyerId;
+        this.storeId = storeId;
         this.price = price;
-        this.address_id = address_id;
-        this.package_fee = package_fee;
+        this.addressText = addressText;
+        this.packageFee = packageFee;
         this.status = status;
         this.time = time;
         this.remark = remark;
-        this.is_cancel = is_cancel;
-        this.cancel_reason = cancel_reason;
+        this.isCancel = isCancel;
+        this.cancelReason = cancelReason;
+        this.orderInfo = orderInfo;
+        this.commentId = commentId;
+        this.itemsLists = itemsLists;
+        this.number = number;
+        this.buyerName = buyerName;
+        this.buyerTel = buyerTel;
+        this.pcd = pcd;
     }
 
-    public Integer getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id=" + id +
+                ", buyerId='" + buyerId + '\'' +
+                ", storeId='" + storeId + '\'' +
+                ", price=" + price +
+                ", addressText='" + addressText + '\'' +
+                ", packageFee=" + packageFee +
+                ", status=" + status +
+                ", time=" + time +
+                ", remark='" + remark + '\'' +
+                ", isCancel=" + isCancel +
+                ", cancelReason='" + cancelReason + '\'' +
+                ", orderInfo='" + orderInfo + '\'' +
+                ", commentId='" + commentId + '\'' +
+                ", itemsLists=" + itemsLists +
+                ", number=" + number +
+                ", buyerName='" + buyerName + '\'' +
+                ", buyerTel='" + buyerTel + '\'' +
+                ", pcd='" + pcd + '\'' +
+                '}';
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public long getDelay(TimeUnit unit) {
+        //上面用到unit.convert()办法，其实在这个小场景不须要用到，只是学习一下如何应用罢了
+        return unit.convert(time.getTime() - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 
-    public String getBuyer_id() {
-        return buyer_id;
+
+    @Override
+    public int compareTo(Delayed o) {
+        //这里依据勾销工夫来比拟，如果勾销所剩时间小的，就会优先被队列提取进去
+        //注意延迟时间 的绑定就是这绑定的属性
+        return this.getTime().compareTo(((Orders) o).getTime());
     }
 
-    public void setBuyer_id(String buyer_id) {
-        this.buyer_id = buyer_id;
-    }
-
-    public String getStore_id() {
-        return store_id;
-    }
-
-    public void setStore_id(String store_id) {
-        this.store_id = store_id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getAddress_id() {
-        return address_id;
-    }
-
-    public void setAddress_id(Integer address_id) {
-        this.address_id = address_id;
-    }
-
-    public Double getPackage_fee() {
-        return package_fee;
-    }
-
-    public void setPackage_fee(Double package_fee) {
-        this.package_fee = package_fee;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getIs_cancel() {
-        return is_cancel;
-    }
-
-    public void setIs_cancel(Integer is_cancel) {
-        this.is_cancel = is_cancel;
-    }
-
-    public String getCancel_reason() {
-        return cancel_reason;
-    }
-
-    public void setCancel_reason(String cancel_reason) {
-        this.cancel_reason = cancel_reason;
-    }
 }

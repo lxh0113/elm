@@ -1,5 +1,6 @@
 package com.elm.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @TableName("store")
 public class Store {
 
+    @TableId
     private String id;
 
     private String logoUrl;

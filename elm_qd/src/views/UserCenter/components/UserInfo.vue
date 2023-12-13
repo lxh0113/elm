@@ -61,7 +61,7 @@
       </li>
       <li>
         <div class="avatar" style="height: 200px">
-          <img :src="`${user.avatar}`"  alt="图片未加载">
+          <img :src="user.avatar"  alt="图片未加载">
         </div>
       </li>
       <li>
@@ -80,7 +80,7 @@
 import AddressItem from '@/views/UserCenter/components/AddressItem.vue'
 import {ref} from 'vue'
 import {useUserStore} from "@/stores/userStore.js";
-import {uploadImgAPI} from "@/apis/upload.js";
+import {uploadImgAPI,uploadAvatarAPI} from "@/apis/upload.js";
 import {storeToRefs} from 'pinia'
 import {getUserInfoAPI} from '@/apis/login.js'
 import {ElMessage} from "element-plus";
@@ -91,8 +91,9 @@ import {changeUserInfoAPI} from "@/apis/user.js";
 const uploadInput=ref(null)
 
 const userStore=useUserStore();
+const user=ref(JSON.parse(JSON.stringify(userStore.user)))
 
-let user={...userStore.user}
+// let user={...userStore.user}
 
 const address=ref({
   receiverName:'lxh0113',
@@ -122,8 +123,10 @@ const uploadAvatar=async ()=>{
     console.log("这是一个图片")
 
     let data = new FormData(); //创建form对象
-    data.append("userId",userStore.user.id)
-    const res=await uploadImgAPI(userStore.user.id,data)
+    // data.append("userId",userStore.user.id)
+    console.log('userId'+userStore.user.id)
+    data.append("file",file)
+    const res=await uploadAvatarAPI(userStore.user.id,data)
 
     console.log(res)
 
@@ -133,7 +136,7 @@ const uploadAvatar=async ()=>{
 
       if(res.success===1)
       {
-        user={...userStore.user}
+        ElMessage.success("更新成功")
       }
 
     }
@@ -161,21 +164,22 @@ const changeInfo=async ()=>{
   else
   {
     //发送请求修改
-    const res= await changeUserInfoAPI(user);
+    const res= await changeUserInfoAPI(user.value);
 
     if(res.data.code===1)
     {
       //正确的设置新的值
-      const resData=await userStore.getUserById(user.id);
+      const resData=await userStore.getUserById(user.value.id);
       if(resData.success)
       {
         //重新解构赋值
-        user={...userStore.user}
+        // user={...userStore.user}
+        user.value=JSON.parse(JSON.stringify(userStore.user))
         ElMessage.success("修改成功！");
       }
       else
       {
-        ElMessage.error("服务器繁忙，请稍后重试")
+        ElMessage.error(res.data.msg)
       }
     }
     else {

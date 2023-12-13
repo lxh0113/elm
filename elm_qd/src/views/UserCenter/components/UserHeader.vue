@@ -1,6 +1,6 @@
 <template>
 <div class="userHeader">
-  <img src="../../../../src/img/logo.png" alt="">
+  <img src="../../../../src/img/logo.png" @click="$router.push('/')" alt="">
   <div class="avatar">
     <img @click="$router.push('/')" :src="userStore?.user?.avatar" alt="">
     <span>{{userStore.user.nickname}}</span>

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Data
 public class DishData {
+
     private Goods goods;
 
     private ArrayList<FlavorsListData> flavorsListData;

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-@WebFilter(value = {"/api/category/**","/api/user/**","/api/store/**","/api/upload/**"})
+@WebFilter(value = {"/api/category/**","/api/user/**","/api/store/**","/api/goods/**","/api/flavors/**","/api/upload/**","/api/orders/**","/api/district/**","/api/alipay/**"})
 public class JwtFilter implements Filter {
 
 
@@ -20,7 +20,7 @@ public class JwtFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
         //在这里判断token值即可
-        System.out.println("12121212");
+        System.out.println("判断token值");
 
         try {
             HttpServletRequest request=(HttpServletRequest)servletRequest;

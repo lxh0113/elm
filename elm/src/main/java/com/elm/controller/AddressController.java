@@ -152,4 +152,14 @@ public class AddressController {
         if(update<=0) throw new Exception("修改地址状态失败");
     }
 
+    @PostMapping("/add")
+    public R addNewAddressToPay(@RequestBody Address address)
+    {
+        address.setId(null);
+
+        int insert = addressDao.insert(address);
+        if(insert<=0) return R.error("出错了");
+
+        return R.success(address);
+    }
 }

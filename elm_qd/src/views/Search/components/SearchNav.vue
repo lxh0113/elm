@@ -2,11 +2,12 @@
   <div class="searchNavBackground">
     <div class="searchNav">
       <div class="logo">
-        <img src="@/img/logo.png" alt="">
+        <img @click="$router.push('/')" src="@/img/logo.png" alt="">
       </div>
       <div class="searchInput">
-        <input type="text" placeholder="请输入搜索内容">
-        <button>搜索</button>
+<!--        @input="fn($event.target.value)"-->
+        <input ref="input" @keyup.enter="fn($event.target.value)" :value="searchText" type="text" placeholder="请输入搜索内容">
+        <button @click="deal">搜索</button>
       </div>
       <div class="changeAddress">
         <el-icon style="color: #01b6fd;margin-left: 30px;font-size: 30px"><LocationInformation /></el-icon>
@@ -17,6 +18,27 @@
 </template>
 
 <script setup>
+import {ref} from 'vue'
+
+const text=ref('')
+const input=ref(null)
+
+const emit=defineEmits(['toSearch'])
+
+const deal=()=>{
+  console.log(input.value.value)
+  fn(input.value.value)
+}
+
+const fn=(value)=>{
+  // console.log(value.event)
+  emit('toSearch',value)
+}
+
+
+const props=defineProps({
+  searchText:String
+})
 
 </script>
 

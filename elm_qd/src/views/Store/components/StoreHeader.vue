@@ -2,8 +2,8 @@
 <div class="bigBox">
   <div class="logo">
     <img @click="$router.push('/')" src="@/img/logo.png" alt="图片未加载">
-    <span v-if="true" class="on">营业中</span>
-    <span v-else class="off">关门中</span>
+    <span v-if="storeStore.getStore().status===0" @click="changeStoreStatus(1)" class="on"><i class="bi bi-toggle-on"></i>营业中</span>
+    <span v-else @click="changeStoreStatus(0)" class="off"><i class="bi bi-toggle-off"></i>关门中</span>
   </div>
   <div class="info">
     <img src="@/img/fox.png" alt="">
@@ -13,7 +13,34 @@
 </template>
 
 <script setup>
+import {ref,onMounted} from 'vue'
+import {changeStoreStatusAPI,getStoreInfoAPI} from "@/apis/store";
+import {useUserStore} from "@/stores/userStore";
+import {ElMessage} from "element-plus";
+import {useStoreStore} from "@/stores/storeStore";
 
+const isOpen=ref(true)
+const storeStore=useStoreStore();
+const userStore=useUserStore();
+const changeStoreStatus=async (status)=>{
+  let data=await storeStore.getStore()
+  data.status=status
+  const res=await changeStoreStatusAPI(data)
+  if(res.data.code===1)
+  {
+    storeStore.setStore(res.data.data)
+    // isOpen.value=status
+    ElMessage.success("修改店铺状态成功")
+  }
+  else
+  {
+    ElMessage.error(res.data.msg)
+  }
+}
+
+onMounted(()=>{
+  isOpen.value=storeStore.store.status===1?0:1
+})
 </script>
 
 <style scoped>
@@ -41,7 +68,7 @@
   /*line-height: 150px;*/
   background: #01b6fd;
   margin-top: 60px;
-  height: 20px;
+  height: 30px;
   color: white;
   padding:5px;
 }
@@ -49,7 +76,7 @@
 {
   background: #7a7a7a;
   margin-top: 60px;
-  height: 20px;
+  height: 30px;
   color: white;
   padding:5px;
 }

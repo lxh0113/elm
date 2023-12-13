@@ -1,6 +1,9 @@
 package com.elm.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.elm.common.R;
 import com.elm.dao.AddressDao;
 import com.elm.dao.CategoryDao;
@@ -8,11 +11,9 @@ import com.elm.dao.StoreDao;
 import com.elm.dao.StoreEnvDao;
 import com.elm.dao.requestData.BecomeStoreData;
 import com.elm.dao.requestData.ChangeStoreData;
+import com.elm.dao.requestData.OrderSearchData;
 import com.elm.dao.responseData.RecommendData;
-import com.elm.domain.Category;
-import com.elm.domain.Store;
-import com.elm.domain.Address;
-import com.elm.domain.Store_env;
+import com.elm.domain.*;
 import com.elm.exception.BecomeStoreException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -230,6 +231,16 @@ public class StoreController {
     {
         Store store=storeDao.selectById(storeId);
         if(store==null) return R.error("获取出错");
+        return R.success(store);
+    }
+
+    @PutMapping("changeStatus")
+    public R changeStoreStatus(@RequestBody Store store)
+    {
+        System.out.println(store);
+        int i = storeDao.updateById(store);
+        if(i<=0) return R.error("获取出错");
+
         return R.success(store);
     }
 }

@@ -93,6 +93,9 @@ const modalTitle=ref("新建地址")
 const modalButton=ref("新建")
 let curIndex=0
 
+//下面这个需要传递数据过来 有可能是新建 也有可能是编辑
+
+
 const addressForm=ref({
   userId:userStore.user.id,
   receiverName:'',

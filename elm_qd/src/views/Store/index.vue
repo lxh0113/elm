@@ -6,8 +6,11 @@
         <ul>
           <li><RouterLink to="/store/workplace">工作台</RouterLink></li>
           <li><RouterLink to="/store/data">数据统计</RouterLink></li>
+
+          <li><RouterLink to="/store/message">消息管理</RouterLink></li>
           <li><RouterLink to="/store/order">订单管理</RouterLink></li>
-          <li><RouterLink to="/store/combo">套餐管理</RouterLink></li>
+
+<!--          <li><RouterLink to="/store/combo">套餐管理</RouterLink></li>-->
           <li><RouterLink to="/store/dish">菜品管理</RouterLink></li>
           <li><RouterLink to="/store/category">分类管理</RouterLink></li>
           <li><RouterLink to="/store/info">商家信息</RouterLink></li>
@@ -18,6 +21,12 @@
       </div>
     </div>
   </div>
+  <!-- Button trigger modal -->
+<!--  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">-->
+<!--    Launch static backdrop modal-->
+<!--  </button>-->
+
+
   <StoreFooter></StoreFooter>
 
 </template>
@@ -51,7 +60,10 @@ import StoreFooter from '@/views/Store/components/StoreFooter.vue'
   background: #01b6fd;
   width: 400px;
 }
-
+ul
+{
+  padding-left: 0;
+}
 .bigBox .left li
 {
   box-sizing: border-box;
@@ -80,8 +92,10 @@ a.router-link-active
 .right
 {
   width: 100%;
+  /*flex:1;*/
   margin:10px;
   background: white;
 }
+
 
 </style>

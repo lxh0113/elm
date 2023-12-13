@@ -1,4 +1,5 @@
 <template>
+
   <div class="detailsBox">
     <ul>
       <li v-for="item in goodsList" :key="item.id">
@@ -7,7 +8,7 @@
     </ul>
   </div>
 
-  <!-- Button trigger modal -->
+<!--   Button trigger modal-->
 <!--  <button ref="toChooseSize" style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chooseSize">-->
 <!--    打开-->
 <!--  </button>-->

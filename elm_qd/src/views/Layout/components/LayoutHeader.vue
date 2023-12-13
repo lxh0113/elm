@@ -15,23 +15,25 @@
       <li><RouterLink active-class="active" :to="`/search`">养生</RouterLink></li>
     </ul>
 
-    <input @keydown="toSearch($event)" type="text" placeholder="搜一搜" />
+    <input v-model="seearchText" @keydown="toSearch($event)" type="text" placeholder="搜一搜" />
 
     <el-icon style="margin-top: 50px;font-size: 50px;margin-left: 30px;color: #02b7fb"><ShoppingCart /></el-icon>
   </div>
 </template>
 
 <script setup>
+import {ref} from 'vue'
 import {useRouter} from "vue-router";
 
 const router=useRouter();
+const seearchText=ref('')
 
 const toSearch=(e)=>{
   console.log(e)
   if(e.code==='Enter')
   {
     //如果是等于回车事件
-    router.push('/search')
+    router.push('/search'+'/'+seearchText.value)
   }
 }
 </script>

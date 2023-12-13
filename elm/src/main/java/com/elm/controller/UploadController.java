@@ -39,13 +39,56 @@ public class UploadController {
             String filePath = "F:\\elmImg\\";
             file.transferTo(new File(filePath + fileName));
 
-            User user=new User();
-            user.setAvatar("http://localhost:8081/img/"+fileName);
-            user.setId(userId);
+//            User user=new User();
+//            user.setAvatar("http://localhost:8081/img/"+fileName);
+//            user.setId(userId);
+
+//            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+//            queryWrapper.eq("id",userId);
+
+//            userDao.update(user,queryWrapper);
+
+            System.out.println("http://localhost:8081/img/"+fileName);
+            return R.success("http://localhost:8081/img/"+fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error("上传失败");
+        }
+    }
+
+    @PostMapping("/avatar")
+    public R uploadAvatar(@RequestParam("userId") String userId,@RequestPart MultipartFile file)
+    {
+
+        System.out.println("userId为"+userId);
+
+        if(userId==null)
+        {
+            return R.error("用户未登录");
+        }
+        try {
+            // 例如：将文件保存到指定文件夹
+            String fileName = file.getOriginalFilename();
+            String suffixName = null;
 
             QueryWrapper<User> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("id",userId);
 
+            User user=userDao.selectOne(queryWrapper);
+
+            if(user==null) return R.error("用户不存在");
+            user.setAvatar("http://localhost:8081/img/"+fileName);
+            user.setId(userId);
+
+            if (fileName != null) {
+                suffixName = fileName.substring(fileName.lastIndexOf("."));
+            }
+            fileName = UUID.randomUUID() + suffixName;
+            fileName=userId+fileName;
+            String filePath = "F:\\elmImg\\";
+            file.transferTo(new File(filePath + fileName));
+
+            user.setAvatar("http://localhost:8081/img/"+fileName);
             userDao.update(user,queryWrapper);
 
             System.out.println("http://localhost:8081/img/"+fileName);

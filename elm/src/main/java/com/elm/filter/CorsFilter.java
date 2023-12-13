@@ -31,7 +31,7 @@ public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("看看我被用了吗");
+//        System.out.println("看看我被用了吗");
 
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
@@ -44,7 +44,7 @@ public class CorsFilter implements Filter {
 
         //response.setHeader("Access-Control-Allow-Origin","http://localhost:5173");
 
-        System.out.println(response);
+//        System.out.println(response);
 
         // 自适应所有自定义头
         String headers = request.getHeader("Access-Control-Request-Headers");

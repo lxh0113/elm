@@ -16,7 +16,6 @@ export const useGoodsStore=defineStore("goods",()=>{
     });
 
     const getGoods=()=>{
-
         console.log(goods.value)
         return goods.value
     }
@@ -36,10 +35,23 @@ export const useGoodsStore=defineStore("goods",()=>{
             return null
         }
     }
+
+    const getGoodsTotalPrice=()=>{
+        for (let i = 0; i < goods.value.flavors.length; i++) {
+            for (let j = 0; j < goods.value.flavorsListData[i].flavors.length; j++) {
+                if(goods.value.flavorsListData[i].flavors[j].id===goods.value.flavors[i].id)
+                {
+                    goods.value.goods.price+=goods.value.flavorsListData[i].flavors[j].price
+                }
+            }
+        }
+    }
+
     return {
         goods,
         getGoods,
-        setGoods
+        setGoods,
+        getGoodsTotalPrice
     }
 
 },{

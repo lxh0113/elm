@@ -12,6 +12,7 @@
 .addBox
 {
   flex: 1;
+  box-sizing: border-box;
   height: 130px;
   background: #01b6fd;
   color: white;
@@ -22,5 +23,9 @@
   display: block;
   line-height: 130px;
   text-align: center;
+}
+.addBox:hover
+{
+  background: #7a8289;
 }
 </style>

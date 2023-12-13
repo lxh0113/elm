@@ -36,3 +36,11 @@ export const getStoreOrigin=(storeId)=>{
         method:'GET'
     })
 }
+
+export const changeStoreStatusAPI=(data)=>{
+    return http({
+        url:'/api/store/changeStatus',
+        method:'PUT',
+        data
+    })
+}

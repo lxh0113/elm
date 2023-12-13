@@ -1,28 +1,28 @@
 <template>
-<div class="contentBack">
+<div class="contentBack" @click="$router.push(`/menu/${store.store.id}`)">
   <div style="height: 20px"></div>
   <div class="contentHeader">
     <div class="leftAvatar">
-      <img src="../../../img/123.jpg" alt="图片未加载">
+      <img :src="store.store.storeUrl" alt="图片未加载">
     </div>
     <div class="rightText">
-      <h3 style="height: 40px">奶茶店</h3>
+      <h3 style="height: 40px">{{store.store.name}}</h3>
       <div class="contentDetails">
-        <span>{{store.star}}分</span>
-        <span>月售{{store.sales}}+</span>
-        <span>{{store.category}}</span>
-        <span>起送：{{store.deliverStartFee}}</span>
+        <span>{{store.store.star}}分</span>
+        <span>月售{{store.store.sales}}+</span>
+        <span>{{store.store.category}}</span>
+        <span>起送：{{store.store.deliverStartFee}}</span>
       </div>
       <div class="contentDesc">
-        <p>{{store.description}}</p>
+        <p>{{store.store.description}}</p>
       </div>
     </div>
   </div>
   <div class="contentFooter">
     <ul>
-      <li v-for="item in store.children">
-        <div class="childrenItem">
-          <img src="../../../img/123.jpg" alt="图片未加载">
+      <li v-for="item in store.list">
+        <div class="childrenItem" @click.stop="$router.push(`/menu/${store.store.id}/order/details/${item.categoryId}`)">
+          <img :src="item.url" alt="图片未加载">
           <h6>{{item.name}}</h6>
           <h6 style="color: red">￥{{item.price}}元</h6>
         </div>

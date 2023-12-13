@@ -2,7 +2,7 @@
   <div class="nav">
 <!--    <el-icon><LocationInformation /></el-icon>-->
     <div class="container">
-      <el-icon style="color: white;margin-left: 30px;"><LocationInformation /></el-icon>
+      <el-icon style="color: white;"><LocationInformation /></el-icon>
       <span class="address" @click="chooseAddress">{{addressText}}</span>
     </div>
 
@@ -285,6 +285,10 @@ onMounted(()=>{
   justify-content: space-between;
   min-width: 1240px;
 }
+.container el-icon
+{
+  margin-left: 30px;
+}
 .address
 {
   color:white;
@@ -384,4 +388,38 @@ li:nth-child(n+2)
   margin-bottom: 0!important;
 }
 
+@media screen and (min-width: 360px) and (max-width: 480px) {
+  .nav
+  {
+    height: 7vh;
+    width: 100vw;
+    display: flex;
+  }
+  .container .address
+  {
+    font-size: 14px;
+  }
+  .container el-icon
+  {
+    margin-left: 3vw;
+  }
+  .nav>ul
+  {
+    /*width: 80vw;*/
+    margin-left: 0;
+    margin-right: 0;
+    flex:1;
+    display: flex;
+    /*margin-right: 0;*/
+  }
+
+  .nav>ul>li
+  {
+    font-size: 14px;
+    height: 7vh;
+    /*margin-top: 3vh;*/
+    padding-left: 2vw;
+    margin-right: 2vw;
+  }
+}
 </style>

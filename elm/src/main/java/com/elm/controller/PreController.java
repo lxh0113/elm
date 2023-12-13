@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class PreController {
     @PostMapping("/login")
     public R login(HttpServletRequest request,@RequestBody PreData preData)
     {
-
+        if(preData==null) return R.error("登录失败");
         User getUser=userDao.selectById(preData.getId());
         System.out.println(preData.getPassword());
         System.out.println(DigestUtils.md5DigestAsHex(preData.getPassword().getBytes()));
@@ -56,6 +57,9 @@ public class PreController {
         else {
             getUser.setPassword(null);
             setToken(getUser.getId(),getUser.getIdentity());
+
+            //设置 userId 在 session 里面
+            request.getSession().setAttribute("userId",getUser.getId());
             return R.success(getUser);
         }
     }
@@ -73,6 +77,8 @@ public class PreController {
         else
         {
             getUser.setPassword(null);
+
+            request.getSession().setAttribute("userId",getUser.getId());
             return R.success(getUser);
         }
 //        return R.error("出错了");
@@ -113,6 +119,8 @@ public class PreController {
                 {
                     System.out.println("注册成功");
                     setToken(originUser.getId(),originUser.getIdentity());
+
+                    request.getSession().setAttribute("userId",originUser.getId());
                     return R.success(originUser);
                 }
                 else
@@ -147,6 +155,9 @@ public class PreController {
             getUser.setPassword(null);
 
             setToken(getUser.getId(),getUser.getIdentity());
+
+            request.getSession().setAttribute("userId",getUser.getId());
+
             return R.success(getUser);
         }
         return R.error("登录失败");

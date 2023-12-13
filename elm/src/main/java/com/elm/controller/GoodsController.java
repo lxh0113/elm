@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.elm.common.R;
 import com.elm.dao.FlavorsDao;
 import com.elm.dao.GoodsDao;
+import com.elm.dao.StoreDao;
 import com.elm.dao.requestData.DishData;
 import com.elm.dao.responseData.FlavorsListData;
+import com.elm.dao.responseData.StoreGoodsData;
 import com.elm.domain.Flavors;
 import com.elm.domain.Goods;
+import com.elm.domain.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,9 @@ public class GoodsController {
 
     @Autowired
     private FlavorsDao flavorsDao;
+
+    @Autowired
+    private StoreDao storeDao;
 
     @PostMapping("/all")
     public R getAllGoods(@RequestBody Goods goods)
@@ -231,6 +237,92 @@ public class GoodsController {
 
         //这个地方还要考虑到数据在前端的使用
         return R.success(dishData);
+    }
+
+    @PostMapping("/user/search")
+    public R search(@RequestParam String text,@RequestParam Boolean status,@RequestParam Integer choose)
+    {
+        System.out.println(text+"---"+status+"---"+choose);
+        List<StoreGoodsData> list=new ArrayList<>();
+
+        //先搜索店铺，在搜索商品
+        if(status)
+        {
+            //搜索商家
+            QueryWrapper<Store> storeQueryWrapper=new QueryWrapper<>();
+            storeQueryWrapper.like("name",text);
+
+            IPage page=new Page();
+            page.setCurrent(1);
+            page.setSize(5);
+
+            IPage storeIpage = storeDao.selectPage(page, storeQueryWrapper);
+
+            List<Store> storeList=storeIpage.getRecords();
+            for (int i = 0; i < storeList.size(); i++) {
+
+                StoreGoodsData storeGoodsData=new StoreGoodsData();
+                storeGoodsData.setStore(storeList.get(i));
+
+                QueryWrapper<Goods> queryWrapper=new QueryWrapper<>();
+                queryWrapper
+                        .like("name",text)
+                        .or()
+                        .like("name","");
+                queryWrapper.eq("store_id",storeList.get(i).getId())
+                        .eq("status",1);
+
+                IPage iPage=new Page();
+                iPage.setSize(3);
+
+                IPage selectPage = goodsDao.selectPage(iPage, queryWrapper);
+
+                storeGoodsData.setList(selectPage.getRecords());
+
+                list.add(storeGoodsData);
+            }
+
+            return R.success(list).add("page",storeIpage);
+        }
+        else
+        {
+            //搜索商品
+            QueryWrapper<Goods> goodsQueryWrapper=new QueryWrapper<>();
+            goodsQueryWrapper.like("name",text)
+                    .eq("status",1)
+                    .groupBy("store_id","id","url","status","description","category_id","price","name");
+
+
+            List<Goods> goodsList=goodsDao.selectList(goodsQueryWrapper);
+
+            for (int i = 0; i < goodsList.size(); i++) {
+
+                if(list.size()!=0&&list.get(list.size()-1).getList().size()>3) continue;
+
+                if(i==0||!goodsList.get(i).getStoreId().equals(goodsList.get(i-1).getStoreId()))
+                {
+                    StoreGoodsData storeGoodsData=new StoreGoodsData();
+                    Store store=storeDao.selectById(goodsList.get(i).getStoreId());
+
+                    List<Goods> goodList=new ArrayList<>();
+                    goodList.add(goodsList.get(i));
+
+                    storeGoodsData.setList(goodList);
+                    storeGoodsData.setStore(store);
+
+                    list.add(storeGoodsData);
+                }
+                else
+                {
+                    list.get(list.size()-1).getList().add(goodsList.get(i));
+                }
+
+                if(list.size()>5) break;
+            }
+
+
+        }
+        return R.success(list);
     }
 
 }

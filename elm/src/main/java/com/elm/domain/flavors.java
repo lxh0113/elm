@@ -13,16 +13,11 @@ import lombok.NoArgsConstructor;
 @Data
 @TableName("flavors")
 public class Flavors {
-
     private String name;
-
     private String options;
-
     private Double price;
-
     @TableId(type = IdType.AUTO)
     private Integer id;
-
     @TableField("goods_id")
     private String goodsId;
 

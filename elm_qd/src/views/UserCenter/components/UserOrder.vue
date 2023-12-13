@@ -3,27 +3,22 @@
     <div class="OrderHeader">
       <ul class="chooseStatus">
         <li>
-          <router-link to="/user/order/details">全部订单</router-link>
+          <router-link to="/user/order/-1">全部订单</router-link>
         </li>
-        <li><router-link to="/user/order/details">待接单</router-link></li>
-        <li><router-link to="/user/order/details">待派送</router-link></li>
-        <li><router-link to="/user/order/details">派送中</router-link></li>
-        <li><router-link to="/user/order/details">已完成</router-link></li>
-        <li><router-link to="/user/order/details">已取消</router-link></li>
+        <li><router-link to="/user/order/1">待接单</router-link></li>
+        <li><router-link to="/user/order/2">已取消</router-link></li>
+        <li><router-link to="/user/order/4">已完成</router-link></li>
+        <li><router-link to="/user/order/5">已评论</router-link></li>
+        <li><router-link to="/user/order/7">已退款</router-link></li>
       </ul>
     </div>
     <div class="showView">
-      <div class="headChoose">
-        <label>搜索:&nbsp;&nbsp;<input type="text" placeholder="请搜索关键字"></label>
-        <label>下单日期:&nbsp;&nbsp;<input type="datetime-local" placeholder="开始日期"></label>
-        <label>至:&nbsp;&nbsp;<input type="datetime-local" placeholder="结束日期"></label>
-      </div>
       <router-view></router-view>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 
 </script>
 
@@ -65,6 +60,7 @@ a.router-link-active
   width: 96%;
   box-shadow: 0 3px 8px rgb(0,0,0,0.2);
   border-radius: 20px;
+  min-height: 700px;
   /*margin-right: 30px;*/
   /*height: 400px;*/
   /*background: pink;*/

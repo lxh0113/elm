@@ -12,3 +12,15 @@ export const uploadImgAPI=(userId,data)=>{
         }
     })
 }
+
+export const uploadAvatarAPI=(userId,data)=>{
+    return request({
+        url:'/api/upload/avatar',
+        method:'POST',
+        data,
+        params:{userId:userId},
+        headers:{
+            "Content-Type": "multipart/form-data"
+        }
+    })
+}

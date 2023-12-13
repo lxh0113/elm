@@ -1,5 +1,7 @@
 server:
   port: 8081
+order:
+  isOpen: 1
 
 spring:
   datasource:
@@ -9,21 +11,69 @@ spring:
     url: jdbc:mysql://localhost:3306/elm
   web:
     resources:
-      static-locations: file:H:\\elmImg
+      static-locations: file:F:\\elmImg
   mvc:
     static-path-pattern: /static/**
+  listener:
+    direct:
+      acknowledge-mode: MANUAL
+    simple:
+      acknowledge-mode: MANUAL
 
   resources:
     static-locations: classpath:/
+  rabbitmq:
+    host: localhost
+    virtual-host: /
+    port: 5672
+    username: root
+    password: 123456
+    connection-timeout: 1s #设置MQ的连接超时时间
+    template:
+      retry:
+        enabled: true #开启超时重试机制
+        initial-interval: 1000ms #失败后的初始等待时间
+        multiplier: 1 #失败后下次等待的时长倍数，下次
+        max-attempts: 3 #最大重试次数
+    publisher-confirm-type: none
+    publisher-returns: false
+  output:
+    ansi:
+      enabled: always
 
+#开启控制台显示sql语句
 logging:
   level:
-    root: warn
-    com.kaven.mybatisplus.dao: trace
-  pattern:
-    console: '%p%m%n'
+    com.elm: debug
+
+
+#logging:
+#  level:
+#    root: info
+#    com.kaven.mybatisplus.dao: trace
+#  pattern:
+#    console: '%p%m%n'
+
+config-center:
+  rabbitRuleConfig:
+    # 系统标志
+    systemMark: local
+    # 普通消息
+    normalExchange: message.normal
+    # 延时消息
+    delayExchange: message.delay
+    # 普通和延时消息死信
+    deadExchange: message.dead
 
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 
+
+
+alipay:
+  appId: 9021000132615181
+  appPrivateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDA90cDpAH0g/pcMtMFidFpbuxOb2S6npazGS6KhyJbnstLzTpijVuyRhibRnwzUnShtysVtu7AYC9WrogXE9nyLGijylh2VXA+74y1BtlBUyrKHp5kDSP4xQCAl6/7PF8qVH7+zk2lURgmu+TWQgdjEN+396EIA/xK2Alba44Y9QdGsVbzJxI6EChfGvbyvAJauqEOttpEGRF6zcT6f9igFwvNkvrchiPibY8g2XK5FJvb7dwLK9aXK4jPP2cgS7Qfs0IlZiDoI5mkIP/1m/hvOhllKBp/+XEUcME8JRDBIyR6XC2lDYCszrfVZA/lFUGSkM2CpPUX3ZB0guU2hxiVAgMBAAECggEAD6S8VBY6tljwtgLEysEmgfalH6K2Ns7ehrx24nIcHfNcpdOIdS7ijSxTmFr5fKulmuqfio4fAueJTuytSbmpRJHHFeg0jbtVczS2YoKgoEQexu3+hzvte6B07vfdI2/8gxEAjqWo88sEOzemUJxfvu9CQ8bGfkDcdjDXaVrp1Sn8AgyIHJBqn/SB4M5Py3z6o0OQcec/EC91uPbgw/pVZ33boTTbWO87A+wNpa9ts8rIk9PgdEsnX3YF5AFWK0xZPjRfFvOnzmWo5zmpg+zF2OmJTZxe9Tg6W9BYt0Z2LMV/oraqf2I8kC4+fm8zuJfXCn/6HswQa+VIoNgsNhFUAQKBgQDuUqQRyPSr4YVgh4Vo2vCj02uSOQK27E+XRt3PcW1yU4V3yFYnMqBTCwFayXKb5imjAzsJlZuL6CeaBsv6SMAgkHlv+UBIpB73IhXDr4dkeZ3PfbG5yzsgeYkokKidzif1NsNYyQU9H1OCyTaQvb5AZoWj8qIh0nuZ374+DaaTlQKBgQDPR2I11nnxh9olsFqARhweew94MKQkhtZYyofY34I3LxFOrlbFaU3AHUklwRz0cjzqK0/KgC7VCaE8TylbwR1nAtZOtjTXcax+Cdi0B7d/fxu5ZOZ5TKhdCNNuF/y9kxAsUIs7xwl4lTMwMk5BDgQxxeSuj3jdZDwEc6zxo90xAQKBgQDm7DCKAxwAx97C7823Eh4Fv8AFyTP2Jvff7wzSCmgwVPmIXRgNlyJ+FLXVUEi7AsPpbiHwYYR8hhCJUHipJYD0jMj+VJeTS2Ottts754LbOnRNLs/c5S1/hAQAyFp5vd493jheeTmYRhhXK7yxdwk3wZ9QgrPS7e5R5Nijq/pyGQKBgGuRtSMRgklZYlmq0ty9Bby/yoBqZdTa8QQ1Xxiqra4rzASUL03V31azHBHuzTMC0iAIiCkkKqm+jKF6x5DpgHPEIinJH1UrlgP24jJTyuPsuBuXhJAwuzNE8EyzQCO13W/SAN/t5Dli3KTHhpr2RjD6bTo2FNh4OzloOrlQe+sBAoGAUrualun+uARNvYD2i7h+SA58jw1CPJ4OQwkkqZWdij0fZb/feWqsgfSGW7lZTUR8XJPAsPi1IwxKmJzOh3Ta5HHXZHg06GdvrztqWIg8YWbloImVtG+NqM05DhVkNT9kNPK4Tt6/lP96jU3pfejexgAolfuSVv5+fLovXmeWQk4=
+  alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu8dQ/gT2rbzaPBiWFo7G1WSmJhPADL96aHxrg6vxw/+Spu4FvkHO9D3e+19ddmsuXZTBs6nB76OmTNJIqWOo9MZOQVzJ6J7JVYXInLl8G3NRAAePvPffR64cJgm/UV8VccmVnE3M4g9DEKm6RO5M5/P5lq9btnMvslIJxizbD4kpdwGN9jeCdtVIG4d0Dewy40cWepOKUMFpIc4vQqW/ZlU+6F3/SUdvrx8QXgdlKmuWDMiVl4XaCEBu6XqX53WqqZzD7yP86Yc5sukir6c8zwmlMJ5A0EZP0KXIUcoBCOUvJqF+o33kar4jL0pJfUQB5slW+UuM7e5NW1znPUFpJwIDAQAB
+  notifyUrl: http://3t53z5.natappfree.cc/api/alipay/notify
+  returnUrl: http://localhost:5173/pay

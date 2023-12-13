@@ -48,6 +48,14 @@ export const changeToDefaultAPI=async (data)=>{
     })
 }
 
+export const addNewAddressForOrderAPI=async (data)=>{
+    return http({
+        url:'/api/address/add',
+        method:'POST',
+        data
+    })
+}
+
 export const getDistrictAPI=async (data)=>{
     return http({
         url:"/api/district",

@@ -15,29 +15,19 @@ import java.lang.reflect.Type;
 @Data
 @TableName("goods")
 public class Goods {
-
     @TableId
     private String id;
-
     private String url;
-
     private Integer status;
-
     private String description;
-
     @TableField("category_id")
     private Integer categoryId;
-
     private double price;
-
     private String name;
-
     @TableField("store_id")
     private String storeId;
-
     @TableField(exist = false)
     private Integer current;
-
     @TableField(exist = false)
     private boolean isSelected;
 
